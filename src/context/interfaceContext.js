@@ -1,21 +1,23 @@
 import React, {useState} from "react";
 
 export const InterfaceContext = React.createContext({
-    mainContextAlert:null
+    mainContextAlert:null,
+    onsetMainAlert: (message)=>{},
+    ondismissMainAlert : ()=>{}
 })
 
 
 export default function InterfaceContextProvider(props) {
     const [mainAlert, setMainAlert] = useState(null);
 
-    const setMAinAlert = (message) => {
+    const mainAlertHandler = (message) => {
         setMainAlert(message);
     }
-    const dismissMainAlert = () => {
+    const dismissMainAlertHandler = () => {
         setMainAlert(null);
     }
     return (
-        <InterfaceContext.Provider value = {{mainAlert, setMAinAlert, dismissMainAlert}}>
+        <InterfaceContext.Provider value = {{mainContextAlert:mainAlert, onsetMainAlert:mainAlertHandler, ondismissMainAlert:dismissMainAlertHandler}}>
             {props.children}
         </InterfaceContext.Provider>
     )

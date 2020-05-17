@@ -19,13 +19,12 @@ const submitLayout = {
 
 
 const Login: React.FC<any> = () => {
-
-  const [error, seterror] = useState<null | string >(null)
+ 
   const [userValidityStatus, setuserValidityStatus] = useState <"" | "success" | "warning" | "error" | "validating">("");
+  const [passwordValidityStatus, setPasswordValidityStatus] = useState <"" | "success" | "warning" | "error" | "validating">("");
   const [isLogin, setIslogin] = useState<boolean>(true)
   const authContext = useContext(AuthContext);
-  const interfaceContext = useContext(InterfaceContext);
-
+  const {onsetMainAlert, mainContextAlert, ondismissMainAlert} = useContext(InterfaceContext);
   // Submit handler
   const onFinish = (values:any) => {
     const {username, password} = values;
@@ -77,9 +76,18 @@ const Login: React.FC<any> = () => {
     }
       )
     .catch( err => {
-      setuserValidityStatus("error")
-     
-      seterror(err.message)
+      setuserValidityStatus("")
+      setPasswordValidityStatus("")
+      if(err.message === "User does not exist!"){
+        setuserValidityStatus("error")
+      }
+      if(err.message === "Incorrect password!"){
+        setPasswordValidityStatus("error")
+      }
+      if(err.message === "User alredy exist!"){
+        setPasswordValidityStatus("error")
+      }
+      onsetMainAlert(err.message);
 
     })
   };
@@ -100,7 +108,7 @@ const Login: React.FC<any> = () => {
         name="username"
         validateStatus={userValidityStatus}
         hasFeedback
-        help={userValidityStatus === 'error'? error :( userValidityStatus === 'validating' ? "The information is being validated..." : '' )}
+        help={userValidityStatus === 'validating' ? "The information is being validated..." : '' }
         rules={[{ required: true, message: 'Please input your username!' }]}
         
       >
@@ -109,6 +117,7 @@ const Login: React.FC<any> = () => {
 
       <Form.Item
         name="password"
+        validateStatus={passwordValidityStatus}
         rules={[{ required: true, message: 'Please input your password!' }]}
       >
         <Input.Password prefix={<LockOutlined className="site-form-item-icon" />}
