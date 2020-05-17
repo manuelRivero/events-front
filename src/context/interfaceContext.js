@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 
-const interfaceContext = React.createContext({
+const InterfaceContext = React.createContext({
     mainContextAlert:null
 })
 
 
-export default function interfaceContext(props) {
+export default function InterfaceContextProvider(props) {
     const [mainAlert, setMainAlert] = useState(null);
 
     const setMAinAlert = (message) => {
@@ -15,8 +15,8 @@ export default function interfaceContext(props) {
         setMainAlert(null);
     }
     return (
-        <interfaceContext value = {{mainAlert, setMAinAlert, dismissMainAlert}}>
+        <InterfaceContext value = {{mainAlert, setMAinAlert, dismissMainAlert}}>
             {props.children}
-        </interfaceContext>
+        </InterfaceContext>
     )
 }
