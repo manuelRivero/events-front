@@ -6,6 +6,8 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import {AuthContext} from "./../../context/authContext";
 import {InterfaceContext} from "./../../context/interfaceContext";
 
+import DissmisableAlert from "./../../components/ui/dissmisibleAlert/dissmisibleAlert";
+
 const layout = {
   wrapperCol: { xs:{span:20}, md:{span:12, offset:8}, lg:{span:10, offset:8} },
 };
@@ -24,11 +26,14 @@ const Login: React.FC<any> = () => {
   const [passwordValidityStatus, setPasswordValidityStatus] = useState <"" | "success" | "warning" | "error" | "validating">("");
   const [isLogin, setIslogin] = useState<boolean>(true)
   const authContext = useContext(AuthContext);
-  const {onsetMainAlert, mainContextAlert, ondismissMainAlert} = useContext(InterfaceContext);
+  const {onsetMainAlert, ondismissMainAlert} = useContext(InterfaceContext);
   // Submit handler
   const onFinish = (values:any) => {
     const {username, password} = values;
-    setuserValidityStatus("validating")
+    setuserValidityStatus("validating");
+    setPasswordValidityStatus("");
+    ondismissMainAlert();
+    
     let requestBody ={
       query:`
       query{
@@ -104,6 +109,7 @@ const Login: React.FC<any> = () => {
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >
+      <DissmisableAlert />
       <Form.Item
         name="username"
         validateStatus={userValidityStatus}
