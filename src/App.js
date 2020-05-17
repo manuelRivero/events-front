@@ -10,6 +10,8 @@ import MainNav from "./components/navigation/mainNav";
 import AuthContextProvider from "./context/authContext";
 import InterfaceContextProvider from "./context/interfaceContext";
 
+import DissmisableAlert from "./components/ui/dissmisibleAlert/dissmisibleAlert"
+
 import "antd/dist/antd.css";
 
 const { Content, Footer, Sider } = Layout;
@@ -28,9 +30,10 @@ function App() {
                   style={{
                     padding: 24,
                     margin: 0,
-                    minHeight: 280,
+                    minHeight: '80vh',
                   }}
                 >
+                   <DissmisableAlert />
                   <Switch>
                     <Redirect from="/" to="/auth" exact></Redirect>
                     <Route path="/auth">
