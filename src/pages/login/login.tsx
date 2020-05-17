@@ -1,7 +1,10 @@
 
-import React, {useState} from 'react';
+import React, {useState,useContext} from 'react';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Form, Input, Button, Checkbox } from 'antd';
+
+import {AuthContext} from "./../../context/authContext";
+import {InterfaceContext} from "./../../context/interfaceContext";
 
 const layout = {
   wrapperCol: { xs:{span:20}, md:{span:12, offset:8}, lg:{span:10, offset:8} },
@@ -9,7 +12,6 @@ const layout = {
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
-
 const submitLayout = {
     wrapperCol: { xs:{span:20}, md:{span:12, offset:8}, lg:{span:10, offset:8}  },
 
@@ -21,6 +23,10 @@ const Login: React.FC<any> = () => {
   const [error, seterror] = useState<null | string >(null)
   const [userValidityStatus, setuserValidityStatus] = useState <"" | "success" | "warning" | "error" | "validating">("");
   const [isLogin, setIslogin] = useState<boolean>(true)
+  const authContext = useContext(AuthContext);
+  const interfaceContext = useContext(InterfaceContext);
+
+  // Submit handler
   const onFinish = (values:any) => {
     const {username, password} = values;
     setuserValidityStatus("validating")
@@ -62,8 +68,12 @@ const Login: React.FC<any> = () => {
       if(res.errors){
         throw new Error(res.errors[0]['message'])
       }
-      setuserValidityStatus("success")
-      console.log(res)
+      if(res.data?.login){
+        let {token,_id, tokenExpiration} = res.data.login;
+        setuserValidityStatus("success");
+        authContext.login(token,_id, tokenExpiration);
+      }
+      
     }
       )
     .catch( err => {
