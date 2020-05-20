@@ -1,11 +1,9 @@
 import React from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter} from "react-router-dom";
 
 import { Layout } from "antd";
 
-import Login from "./pages/login/login";
-import Events from "./pages/events/events";
-import Bookings from "./pages/bookings/bookings";
+import Routes from "./pages/routes/routes";
 import MainNav from "./components/navigation/mainNav";
 import AuthContextProvider from "./context/authContext";
 import InterfaceContextProvider from "./context/interfaceContext";
@@ -34,18 +32,7 @@ function App() {
                   }}
                 >
                    <DissmisableAlert />
-                  <Switch>
-                    <Redirect from="/" to="/auth" exact></Redirect>
-                    <Route path="/auth">
-                      <Login />
-                    </Route>
-                    <Route path="/events">
-                      <Events />
-                    </Route>
-                    <Route path="/bookings">
-                      <Bookings />
-                    </Route>
-                  </Switch>
+                    <Routes></Routes>
                 </Content>
               </Layout>
             </Layout>
