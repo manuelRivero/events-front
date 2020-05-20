@@ -9,7 +9,7 @@ const { SubMenu } = Menu;
 const { Title } = Typography;
 
 const MainNav = () => {
-  const { userId } = useContext(AuthContext);
+  const { userId, logout } = useContext(AuthContext);
   return (
     <Header className="header" style={{ display: "flex", padding: " 0 25px" }}>
       <div
@@ -45,7 +45,7 @@ const MainNav = () => {
               <Menu.Item key="setting:1">Option 1</Menu.Item>
             </Menu.ItemGroup>
             <Menu.ItemGroup title="Item 2">
-              <Menu.Item key="setting:4">Logout</Menu.Item>
+              <Menu.Item key="setting:4" onClick={logout}>Logout</Menu.Item>
             </Menu.ItemGroup>
           </SubMenu>
         ) : (
