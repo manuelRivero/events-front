@@ -1,31 +1,25 @@
 import React, { useState, useContext } from "react";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { UserOutlined, LockOutlined, UserAddOutlined} from "@ant-design/icons";
 import { Form, Input, Button, Checkbox, Typography } from "antd";
 
 import { AuthContext } from "./../../context/authContext";
 import { InterfaceContext } from "./../../context/interfaceContext";
-
-import DissmisableAlert from "./../../components/ui/dissmisibleAlert/dissmisibleAlert";
 import styles from "./login.module.css";
 
 const { Title } = Typography;
 
 const layout = {
   wrapperCol: {
-    xs: { span: 20, offset: 2 },
-    md: { span: 12, offset: 6 },
-    lg: { span: 12, offset: 6 },
+    xs: { span: 24}
   },
 };
 const tailLayout = {
-  wrapperCol: { xs: { span: 20, offset: 2 }, md: { span: 12, offset: 6 } },
+  wrapperCol: { xs: { span: 24 }},
 };
 const submitLayout = {
   wrapperCol: {
-    xs: { span: 20, offset: 2 },
-    md: { span: 12, offset: 6 },
-    lg: { span: 12, offset: 6 },
-  },
+    xs: { span: 24}
+  }
 };
 
 const Login: React.FC<any> = () => {
@@ -111,8 +105,9 @@ const Login: React.FC<any> = () => {
 
   return (
     <div className={styles.Login}>
-      <Title style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-        {isLogin ? "User Login" : "Create account"}
+      <Title className={styles.Title}>
+      {isLogin ? <h1><UserOutlined className={styles.Icon} /></h1> : <h1><UserAddOutlined className={styles.Icon} /></h1>}
+        {isLogin ? ` User Login` : `Create account`}
       </Title>
       <Form
         {...layout}

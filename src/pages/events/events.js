@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { PageHeader, Button, Descriptions } from 'antd';
-import Modal from './../../components/ui/modal/modal'
+import {AuthContext} from './../../context/authContext'
+import Modal from './../../components/ui/modal/modal';
+
 
 
 const Events = () => {
-    const [showModal, setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(false);
+    const {token} = useContext(AuthContext);
 
     const showModalHandler = () => {
         setShowModal(true);
@@ -12,15 +15,54 @@ const Events = () => {
     const hideModalHandler = () => {
         setShowModal(false);
     }
-    const submitEvent = () => {
-        console.log("ok")
-    }
+    const submitEvent = (form) => {
+        const {name, price, description, date} = form
+        console.log(token)
+        let requestBody = {
+          query: `
+          mutation{
+            createEvents(eventInput:{title:"${name}", description:"${description}", price:${price}, date:"${date}"}){
+            _id
+            title
+            description
+            date
+            price
+            creator{
+              _id
+              email
+            }
+          }}`,
+        };
+        
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer" +" " + token
+        
+      },
+    })
+      .then((res) => {
+       
+        return res.json();
+      })
+      .then((res) => {
+         console.log(res)
+        if (res.errors) {
+          throw new Error(res.errors[0]["message"]);
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+  };
+
+  
     return (
         
   <div className="site-page-header-ghost-wrapper">
-      <Modal show={showModal} onOk={submitEvent} onCancel={hideModalHandler}>
-          <p>hola</p>
-      </Modal>
+      <Modal show={showModal} onOk={submitEvent} onCancel={hideModalHandler} />
   <PageHeader
     ghost={false}
     onBack={() => window.history.back()}
